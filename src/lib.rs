@@ -1,6 +1,6 @@
 use yew::{html, Component, ComponentLink, Html, Renderable, ShouldRender};
 use yew::services::ConsoleService;
-
+use yew::components::select::Select;
 
 pub struct MyApp {
     console: ConsoleService,
@@ -41,7 +41,7 @@ impl Component for MyApp {
             id: 3,
             account: "xusong".to_string(),
             name: "许崇".to_string(),
-            age: 20
+            age: 21
         });
         
         MyApp {
@@ -62,25 +62,32 @@ impl Component for MyApp {
 
 impl Renderable<MyApp> for MyApp {
     fn view(&self) -> Html<Self> {
+		let scenes = vec!["aaa", "bbb"];
+        
         html! {
-            <div>
-                <table>
-                    <thead>
-                        <th>
-                            <td>{"id"}</td>
-                            <td>{"姓名"}</td>
-                            <td>{"账号"}</td>
-                            <td>{"年龄"}</td>
-                        </th>
-                    </thead>
-                    <tbody>
-                        { for self.persons.iter().map(|person|
-                            row_view(person)
-                        )}
-                    </tbody>
-                </table>
-                
-                <button onclick=|_| Msg::Click,>{ "Click" }</button>
+			<div>
+				<p>
+					<Select<&str>: selected=Some(scenes[0]), options=scenes, />
+				</p>
+				<div>
+					<table>
+						<thead>
+							<th>
+								<td>{"id"}</td>
+								<td>{"姓名"}</td>
+								<td>{"账号"}</td>
+								<td>{"年龄"}</td>
+							</th>
+						</thead>
+						<tbody>
+							{ for self.persons.iter().map(|person|
+								row_view(person)
+							)}
+						</tbody>
+					</table>
+					
+					<button onclick=|_| Msg::Click,>{ "Click" }</button>
+				</div>
             </div>
         }
     }
@@ -96,37 +103,3 @@ fn row_view(person: &Person) -> Html<MyApp> {
         </tr>
     }
 }
-
-/*
-fn view_square(selected: Option<(u32, u32)>, row: u32, column: u32) -> Html<Model> {
-    html! {
-        <td
-            class=square_class((column, row), selected),
-            onclick=|_| Msg::Select(column, row),
-        >
-        </td>
-    }
-}
-
-fn view_row(selected: Option<(u32, u32)>, row: u32) -> Html<Model> {
-    html! {
-        <tr>
-            {for (0..99).map(|column| {
-                view_square(selected, row, column)
-            })}
-        </tr>
-    }
-}
-
-impl Renderable<Model> for Model {
-    fn view(&self) -> Html<Self> {
-        html! {
-            <table>
-                {for (0..99).map(|row| {
-                    view_row(self.selected, row)
-                })}
-            </table>
-        }
-    }
-}
-*/
